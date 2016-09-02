@@ -13,7 +13,7 @@ def check_email_status(mx_resolver, recipient_address, sender_address, smtp_time
     :param helo_hostname: string
     :return: dict
     """
-    domain = str.lower(recipient_address[recipient_address.find('@') + 1:])
+    domain = recipient_address[recipient_address.find('@') + 1:]
     if helo_hostname is None:
         helo_hostname = domain
 

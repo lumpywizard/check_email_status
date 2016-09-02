@@ -13,7 +13,7 @@ Here is an example using pyDNS as the MX resolver::
     from check_email_status import check_email_status
     from check_email_status.resolvers import PyDNSMXResolver
 
-    status = check_email_status(MXResolver, 'recipient@domain.com', 'sender@domain.com')
+    status = check_email_status(PyDNSMXResolver, 'recipient@domain.com', 'sender@domain.com')
 
     # This is the SMTP status code returned by the server. (e.g.) 550
     print status['status']
