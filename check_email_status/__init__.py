@@ -1,5 +1,5 @@
-import smtplib
 import re
+import smtplib
 
 
 def check_email_status(mx_resolver, recipient_address, sender_address, smtp_timeout=10, helo_hostname=None):
@@ -57,15 +57,6 @@ if __name__ == "__main__":
 
     recipient_email = console_input("Recipient Email: ")
     sender_email = console_input("Sender Email: ")
-    resolver = ''
-    while resolver.lower() != 'pydns' and resolver.lower() != 'dnspython':
-        resolver = console_input('Resolver (pyDNS or dnspython): ')
+    from resolvers import PyDNSMXResolver
 
-    if resolver.lower() == 'pydns':
-        from resolvers import PyDNSMXResolver
-        resolver = PyDNSMXResolver
-    elif resolver.lower() == 'dnspython':
-        from resolvers import DNSPythonMXResolver
-        resolver = DNSPythonMXResolver
-
-    print(check_email_status(resolver, recipient_email, sender_email))
+    print(check_email_status(PyDNSMXResolver, recipient_email, sender_email))

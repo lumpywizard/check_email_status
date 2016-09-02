@@ -1,3 +1,5 @@
+import DNS
+
 class MXRecord:
     _domain = None
     _priority = None
@@ -42,7 +44,6 @@ class PyDNSMXResolver(MXResolver):
         :param domain:
         :return: [MXRecord]
         """
-        import DNS
 
         DNS.DiscoverNameServers()
         request = DNS.Request()
