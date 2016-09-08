@@ -1,5 +1,6 @@
 import re
 import smtplib
+import socket
 
 
 def check_email_status(mx_resolver, recipient_address, sender_address, smtp_timeout=10, helo_hostname=None):
@@ -17,8 +18,14 @@ def check_email_status(mx_resolver, recipient_address, sender_address, smtp_time
     if helo_hostname is None:
         helo_hostname = domain
 
-    records = mx_resolver.get_mx_records(helo_hostname)
     ret = {'status': 101, 'extended_status': None, 'message': "The server is unable to connect."}
+
+    records = []
+    try:
+        records = mx_resolver.get_mx_records(helo_hostname)
+    except socket.gaierror:
+        ret['status'] = 512
+        ret['extended_status'] = "5.1.2 Domain name address resolution failed in MX lookup."
 
     smtp = smtplib.SMTP(timeout=smtp_timeout)
 
@@ -45,6 +52,9 @@ def check_email_status(mx_resolver, recipient_address, sender_address, smtp_time
         except smtplib.SMTPServerDisconnected:
             ret['status'] = 111
             ret['extended_status'] = "SMTP Server disconnected"
+        except socket.gaierror:
+            ret['status'] = 512
+            ret['extended_status'] = "5.1.2 Domain name address resolution failed."
 
     return ret
 
